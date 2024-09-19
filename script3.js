@@ -28,7 +28,7 @@ async function captureFormFields(formId) {
 document
   .getElementById("contactForm")
   .addEventListener("submit", async function (e) {
-    e.preventDefault();
+    e.preventDefault(); // Evita o comportamento padrão do submit
 
     try {
       // Obtém os valores dos campos do formulário de forma assíncrona
@@ -37,10 +37,17 @@ document
       // Obtém os parâmetros da URL de forma assíncrona
       const urlParams = await getURLParams();
 
-      // Cria o objeto com os dados do formulário e os parâmetros da URL
+      // Captura o nome da página e a URL atual
+      const pageInfo = {
+        pageTitle: document.title, // Captura o título da página
+        pageURL: window.location.href, // Captura a URL da página
+      };
+
+      // Cria o objeto com os dados do formulário, os parâmetros da URL e as informações da página
       const formData = {
         formFields: formFields,
         urlParams: urlParams, // Adiciona os parâmetros da URL no corpo do JSON
+        pageInfo: pageInfo, // Adiciona as informações da página no corpo do JSON
       };
 
       // Faz a chamada API do tipo POST de forma assíncrona
@@ -56,10 +63,11 @@ document
         }
       );
 
-      console.log(response);
+      console.log(response); // Log para depuração
+
       // Redireciona para a página de obrigado **somente após** a chamada à API
       //window.location.href = "pagina-obrigado.html";
     } catch (error) {
-      console.log(error);
+      console.log("Erro ao enviar dados:", error);
     }
   });
